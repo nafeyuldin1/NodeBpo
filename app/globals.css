@@ -14,8 +14,147 @@
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+
+.trustItems{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+/* Add this to your CSS file (e.g., global.css or a specific header.css) */
+.header {
+  transition: background-color 0.5s ease-in-out; /* Smooth transition for background-color */
+}
+
+.header-scrolled {
+  /* background-image: url('/f9130e0aa3.jpg') !important;
+  background-size: cover;
+  background-position: left bottom ;
+  background-repeat: no-repeat;  */
+  background-color: white !important;
+}
+
+.header {
+  background-color: transparent; /* Default background color */
+}
+.servicesItems{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@media screen and (min-width: 1023px){
+  .servicesItems:nth-child(2){
+    flex-direction: row-reverse;
+  }
+}
+.rc-accordion-toggle {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  justify-content: space-between;
+  transition: 1s;
+ }
+ .rc-accordion-toggle.active{
+  background-color: white;
+ }
+ .rc-accordion-toggle.active .rc-accordion-icon{
+  transform: rotate(180deg);
+  color: #fff;
+ }
+ .rc-accordion-card{
+  border: 1px solid #000;
+  border-radius: 5px;
+  overflow: hidden;
+ }
+ .rc-accordion-card:last-child{
+  margin-bottom: 0;
+ }
+ .rc-accordion-title{
+  font-weight: 500;
+  position: relative;
+  margin-bottom: 0;
+  color:white;
+  transition: 0.5s;
+ }
+ .rc-accordion-toggle.active .rc-accordion-title{
+  color: black;
+ }
+ .rc-accordion-icon{
+  position: relative;
+  top: 2px;
+  transition: 0.5s;
+ }
+ .rc-accordion-body{
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 15px;
+ }
+ .rc-accordion-body p{
+  margin-bottom: 0;
+  font-weight: 400;
+  color: black;
+  line-height: 24px;
+ }
+ .rc-collapse{
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease;
+ }
+ .rc-collapse.show{
+  height: auto;
+ }
+ .Team {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media screen and (max-width: 1000px) {
+  .Team {
+    grid-template-columns: 1fr 1fr !important; /* Optional: Keep this in case you want to change later */
+  }
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .Team {
+    grid-template-columns: 1fr !important;
+  }
+}
+ .ServiceBanner{
+  position: relative;
+ }
+ /* .ServiceBanner:after{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  right: 0;
+  content: '';
+  background: rgba(0, 0, 0, 0.5);
+ } */
+  .trustItems:nth-child(1){
+    background-image: linear-gradient(to top, #fddb92 0%, #d1fdff 100%);
+  }
+  .trustItems:nth-child(2){
+    background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+  }
+  .trustItems:nth-child(3){
+    background-image: linear-gradient(-20deg, #f794a4 0%, #fdd6bd 100%);
+  }
+  .bgWhite{
+    background-color: White !important;
+  }
+  .ServiceBanner{
+    background-image: url('/f9130e0aa3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .heroS{
+    background-image: url('/398d5839af.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  body{
+    scroll-behavior: smooth;
+  }
