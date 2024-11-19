@@ -11,7 +11,8 @@ const Contact = () => {
     message: ''
   });
 
-  const handleChange = (e:any) => {
+  // Update to specify event types
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -19,11 +20,12 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = ((e:any) => {
+  // Update to specify form submit event type
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here (e.g., send to an API)
     console.log(formData);
-  });
+  };
 
   return (
     <div id="contact" style={{
@@ -41,7 +43,7 @@ const Contact = () => {
                     height={1000}
                       src="/80ec6d0b75.jpg"
                       alt="ContactUs tailwind section"
-                      className="w-full h-[90vh] object-cover  bg-blend-multiply bg-indigo-700"
+                      className="w-full h-[75vh] object-cover  bg-blend-multiply bg-indigo-700"
                     />
                     <h1 style={{
                         fontWeight:'900'

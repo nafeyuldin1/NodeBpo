@@ -15,8 +15,8 @@ const Footer = () => {
        <div className='flex flex-col  gap-2 lg:px-10 '>
         <h3 className={` text-white text-3xl mb-4 ${CaladeaF}`}>Quick Links</h3>
         {
-            MenuLinks.map((item) => (
-                     <Link href={item.link} className={`txt-md text-white href={item.link}`} > 
+            MenuLinks.map((item, index) => (
+                     <Link key={index} href={item.link} className={`txt-md text-white href={item.link}`} > 
                            {item.label}
                      </Link>
             ))
