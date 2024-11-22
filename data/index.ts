@@ -2,7 +2,7 @@ export const MenuLinks = [
     {
       id:1,
       label:'Home',
-      link: '/'
+      link: '#'
     },
     {
         id:2,
@@ -11,20 +11,15 @@ export const MenuLinks = [
       },
       {
         id:3,
-        label:'Team',
+        label:'About',
         link: '#team'
       },
       {
         id:4,
-        label:'About',
+        label:'FAQs',
         link: '#about'
-      },
-      {
-        id:4,
-        label:'Contact',
-        link: '#contact'
       }
-      
+  
 
 ]
 export const TrustBadgesInfo = [
@@ -49,20 +44,21 @@ export const TrustBadgesInfo = [
 
 ]
 export const ServicesInfo = [
+ 
   {
     id:1,
-    image:'/img.jpg',
-    title: 'Professional Inbound Call Management',
-    description: "Our inbound call services are designed to handle all customer inquiries, support requests, and general communication needs. Whether it's for order assistance, product inquiries, or technical support, our trained agents provide prompt and professional service. With an emphasis on customer satisfaction, we ensure that every call is answered efficiently, with personalized attention, and resolved to the customer’s complete satisfaction. Our inbound call services are available 24/7 to ensure that your customers always receive the support they need, when they need it.",
-    backgroundColor:'#000',
-    TextColor:'#fff'
+    image:'/img-1.jpg',
+    title: 'Targeted Outbound Call Campaigns',
+    description: "Our outbound call services help businesses proactively engage with their customers, prospects, and leads. From sales calls to customer follow-ups, market research surveys, and appointment scheduling, we manage all aspects of outbound communication with precision. Our agents are trained to build rapport, drive sales conversions, collect feedback, and maintain positive customer relationships. Whether you're looking to expand your client base or follow up on existing inquiries, our outbound call services are an efficient way to reach your audience and achieve your business goals.",
+    backgroundColor:'#fff',
+    TextColor:'#000'
   },
   {
     id:2,
-    image:'/img-1.jpg',
-    title: 'Targeted Outbound Call Solutions',
-    description: "Our outbound call services help businesses proactively engage with their customers, prospects, and leads. From sales calls to customer follow-ups, market research surveys, and appointment scheduling, we manage all aspects of outbound communication with precision. Our agents are trained to build rapport, drive sales conversions, collect feedback, and maintain positive customer relationships. Whether you're looking to expand your client base or follow up on existing inquiries, our outbound call services are an efficient way to reach your audience and achieve your business goals.",
-    backgroundColor:'#fff',
+    image:'/img.jpg',
+    title: 'Professional Inbound Call Campaign',
+    description: "Our inbound call services are designed to handle all customer inquiries, support requests, and general communication needs. Whether it's for order assistance, product inquiries, or technical support, our trained agents provide prompt and professional service. With an emphasis on customer satisfaction, we ensure that every call is answered efficiently, with personalized attention, and resolved to the customer’s complete satisfaction. Our inbound call services are available 24/7 to ensure that your customers always receive the support they need, when they need it.",
+    backgroundColor:'#FFD262',
     TextColor:'#000'
   },
   {
@@ -70,8 +66,8 @@ export const ServicesInfo = [
     image:'/img-2.jpg',
     title: 'Expert Customer Support for Every Need',
     description: "Our customer support services are designed to provide your customers with fast, friendly, and effective solutions to their problems. We handle everything from technical troubleshooting to order inquiries and product support, ensuring your customers' concerns are addressed quickly and professionally. Our agents are equipped with the tools and training to manage all customer touchpoints—phone, email, chat, or social media—so you can rest assured that your customers receive consistent, high-quality support across all channels. Let us handle your customer support, so you can focus on growing your business.",
-    backgroundColor:'#000',
-    TextColor:'#fff'
+    backgroundColor:'#fff',
+    TextColor:'#000'
   },
 
 ]

@@ -1,7 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+html,
+body{
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 
+}
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -149,11 +154,23 @@
     background-size: cover;
     background-repeat: no-repeat;
   }
-  .heroS{
-    background-image: url('/398d5839af.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+  @media screen and (max-width: 749px){
+    .heroS{
+      background-image: url('/pexels-mart-production-7709287.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+  
+  }
+  @media screen and (min-width: 750px){
+    .heroS{
+      background-image: url('/398d5839af.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+   
   }
   body{
     scroll-behavior: smooth;

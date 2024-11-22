@@ -1,111 +1,192 @@
-'use client'
+'use client';
 import { CaladeaF } from '@/fonts';
-import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    message: ''
+    message: '',
+    website: 'Node BPO', // Hidden field value
   });
+
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [captchaError, setCaptchaError] = useState(false);
 
   // Update to specify event types
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
-  // Update to specify form submit event type
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Load the reCAPTCHA script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js`;
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Define handleCaptcha globally
+    (window as any).handleCaptcha = (token: string) => {
+      setCaptchaToken(token);
+      setCaptchaError(false); // Remove the error message when reCAPTCHA is completed
+    };
+
+    gsap.registerPlugin(ScrollTrigger); // Register GSAP ScrollTrigger
+
+    // Animating form fields on scroll
+    gsap.fromTo(
+      '.contact-input',
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: '.contact-form',
+          start: 'top 80%',
+          end: 'top 30%',
+          scrub: 1,
+        },
+      }
+    );
+
+    // Animate the background image on scroll
+    gsap.fromTo(
+      '.contact-image',
+      { opacity: 0, scale: 0.8 },
+      {
+        opacity: 1,
+        scale: 1,
+        duration: 1.5,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: '.contact-image',
+          start: 'top 80%',
+          end: 'top 30%',
+          scrub: 1,
+        },
+      }
+    );
+
+    // Animate the "Send" button on hover
+    gsap.fromTo(
+      '.send-button',
+      { scale: 1, backgroundColor: '#FFD262' },
+      {
+        scale: 1.1,
+        backgroundColor: '#FCD44B',
+        duration: 0.4,
+        ease: 'power2.inOut',
+        paused: true,
+        hover: {
+          scale: 1.1,
+          backgroundColor: '#FFD262',
+        },
+      }
+    );
+
+    // Animating popup
+    if (popupVisible) {
+      gsap.fromTo(
+        '.popup-message',
+        { opacity: 0, scale: 0.8 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+        }
+      );
+    }
+  }, [popupVisible]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here (e.g., send to an API)
-    console.log(formData);
+
+    // Check if reCAPTCHA is complete
+    if (!captchaToken) {
+      setCaptchaError(true);
+      return;
+    }
+
+    const formDataWithCaptcha = {
+      ...formData,
+      captchaToken,
+    };
+
+    const formJson = JSON.stringify(formDataWithCaptcha);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: formJson,
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        setPopupMessage('Form submitted successfully!');
+        setPopupVisible(true);
+        setCaptchaToken(null); // Reset reCAPTCHA token
+        (window as any).grecaptcha.reset(); // Reset the reCAPTCHA widget
+      } else {
+        setPopupMessage('Form submission error. Please try again.');
+        setPopupVisible(true);
+      }
+    } catch (error: any) {
+      setPopupMessage('Error sending form: ' + error.message);
+      setPopupVisible(true);
+    }
+  };
+
+  const closePopup = () => {
+    setPopupVisible(false);
   };
 
   return (
-    <div id="contact" style={{
-        scrollMarginTop: '50px'
-      }} className='bg-gray-50'>
+    <div id="contact" className="bg-gray-50" style={{ scrollMarginTop: '50px' }}>
       <form onSubmit={handleSubmit} method="post">
-        <section className="py-24">
+        <section className=" py-12 md:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 grid-cols-1">
               <div className="lg:mb-0 mb-10">
                 <div className="group w-full h-full">
-                  <div className="relative h-full">
-                    <Image
-                    width={1000}
-                    height={1000}
+                  <div className="relative h-full contact-image">
+                    <img
+                      width={1000}
+                      height={1000}
                       src="/80ec6d0b75.jpg"
                       alt="ContactUs tailwind section"
-                      className="w-full h-[75vh] object-cover  bg-blend-multiply bg-indigo-700"
+                      className="w-full h-[50vh] md:h-[75vh] object-cover bg-blend-multiply bg-indigo-700"
                     />
-                    <h1 style={{
-                        fontWeight:'900'
-                    }} className={`font-manrope capitalize  text-black text-5xl font-bold leading-10 absolute top-11 left-11 ${CaladeaF} `}>
-                      Contact us
-                    </h1>
-                    <div className="absolute bottom-0 w-full lg:p-11 p-5">
-                      <div className="bg-white rounded-lg p-6 block">
-                        <a href="tel:+14706011911" className="flex items-center mb-6">
-                          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                              d="M22.3092 18.3098C22.0157 18.198 21.8689 18.1421 21.7145 18.1287C21.56 18.1154 21.4058 18.1453 21.0975 18.205L17.8126 18.8416C17.4392 18.9139 17.2525 18.9501 17.0616 18.9206C16.8707 18.891 16.7141 18.8058 16.4008 18.6353C13.8644 17.2551 12.1853 15.6617 11.1192 13.3695C10.9964 13.1055 10.935 12.9735 10.9133 12.8017C10.8917 12.6298 10.9218 12.4684 10.982 12.1456L11.6196 8.72559C11.6759 8.42342 11.7041 8.27233 11.6908 8.12115C11.6775 7.96998 11.6234 7.82612 11.5153 7.5384L10.6314 5.18758C10.37 4.49217 10.2392 4.14447 9.95437 3.94723C9.6695 3.75 9.29804 3.75 8.5551 3.75H5.85778C4.58478 3.75 3.58264 4.8018 3.77336 6.06012C4.24735 9.20085 5.64674 14.8966 9.73544 18.9853C14.0295 23.2794 20.2151 25.1426 23.6187 25.884C24.9335 26.1696 26.0993 25.1448 26.0993 23.7985V21.2824C26.0993 20.5428 26.0993 20.173 25.9034 19.8888C25.7076 19.6046 25.362 19.4729 24.6708 19.2096L22.3092 18.3098Z"
-                              stroke="#000"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          <h5 className={`text-black text-base font-normal leading-6 ml-5 ${CaladeaF} `}>470-601-1911</h5>
-                        </a>
-                        <a href="https://veilmail.io/irish-geoff" className="flex items-center mb-6">
-                          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                              d="M2.81501 8.75L10.1985 13.6191C12.8358 15.2015 14.1544 15.9927 15.6032 15.9582C17.0519 15.9237 18.3315 15.0707 20.8905 13.3647L27.185 8.75M12.5 25H17.5C22.214 25 24.5711 25 26.0355 23.5355C27.5 22.0711 27.5 19.714 27.5 15C27.5 10.286 27.5 7.92893 26.0355 6.46447C24.5711 5 22.214 5 17.5 5H12.5C7.78595 5 5.42893 5 3.96447 6.46447C2.5 7.92893 2.5 10.286 2.5 15C2.5 19.714 2.5 22.0711 3.96447 23.5355C5.42893 25 7.78595 25 12.5 25Z"
-                              stroke="#000"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
-                          </svg>
-                          <h5 className="text-black text-base font-normal leading-6 ml-5">https://veilmail.io/irish-geoff</h5>
-                        </a>
-                        <a href="https://maps.google.com/?q=654+Sycamore+Avenue,+Meadowville,+WA+76543" className="flex items-center">
-                          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                              d="M25 12.9169C25 17.716 21.1939 21.5832 18.2779 24.9828C16.8385 26.6609 16.1188 27.5 15 27.5C13.8812 27.5 13.1615 26.6609 11.7221 24.9828C8.80612 21.5832 5 17.716 5 12.9169C5 10.1542 6.05357 7.5046 7.92893 5.55105C9.8043 3.59749 12.3478 2.5 15 2.5C17.6522 2.5 20.1957 3.59749 22.0711 5.55105C23.9464 7.5046 25 10.1542 25 12.9169Z"
-                              stroke="#000"
-                              strokeWidth="2"
-                            />
-                            <path
-                              d="M17.5 11.6148C17.5 13.0531 16.3807 14.219 15 14.219C13.6193 14.219 12.5 13.0531 12.5 11.6148C12.5 10.1765 13.6193 9.01058 15 9.01058C16.3807 9.01058 17.5 10.1765 17.5 11.6148Z"
-                              stroke="#000"
-                              strokeWidth="2"
-                            />
-                          </svg>
-                          <h5 className="text-black text-base font-normal leading-6 ml-5">654 Sycamore Avenue, Meadowville, WA 76543</h5>
-                        </a>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-5 lg:p-11  ">
-                <h2 style={{
-                    fontWeight:'900'
-                }}  className={`text-black font-manrope text-5xl font-semibold leading-10 mb-11 ${CaladeaF} `}>Get In Touch</h2>
+              <div className="bg-gray-50 p-5 lg:p-11 contact-form">
+                <h2 style={{ fontWeight: '900' }} className={`text-black font-manrope text-5xl font-semibold leading-10 mb-11 ${CaladeaF} `}>
+                  Get In Touch
+                </h2>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full h-16 text-black placeholder-gray-400 shadow-sm bg-transparent text-xl font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-10 ${CaladeaF} `}
+                  className={`contact-input w-full h-16 text-black placeholder-gray-400 shadow-sm bg-transparent text-xl font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-5 md:mb-10 ${CaladeaF} `}
                   placeholder="Name"
                 />
                 <input
@@ -113,7 +194,7 @@ const Contact = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`w-full h-16 text-black placeholder-gray-400 shadow-sm bg-transparent text-xl font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-10 ${CaladeaF} `}
+                  className={`contact-input w-full h-16 text-black placeholder-gray-400 shadow-sm bg-transparent text-xl font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-5 md:mb-10 ${CaladeaF} `}
                   placeholder="Email"
                 />
                 <input
@@ -121,20 +202,27 @@ const Contact = () => {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full h-16 text-black placeholder-gray-400 shadow-sm bg-transparent text-xl font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-10 ${CaladeaF} `}
+                  className={`contact-input w-full h-16 text-black placeholder-gray-400 shadow-sm bg-transparent text-xl font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-5 md:mb-10 ${CaladeaF} `}
                   placeholder="Phone"
                 />
-         
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  className={`w-full h-16 text-black placeholder-gray-400 bg-transparent text-xl shadow-sm font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-10 ${CaladeaF} `}
+                  className={`contact-input w-full h-16 text-black placeholder-gray-400 bg-transparent text-xl shadow-sm font-normal leading-7 rounded-lg border border-gray-200 focus:outline-none pl-4 mb-5 md:mb-10 ${CaladeaF} `}
                   placeholder="Message"
                 />
+
+                {/* Hidden Website Field */}
+                <input type="hidden" name="website" value="Node BPO" />
+
+                {/* Add reCAPTCHA Widget */}
+                <div className="g-recaptcha mb-4" data-sitekey="6LemCocqAAAAAF4LqQJgYqr6tuBEcZdAQPeubEBn" data-callback="handleCaptcha" aria-required="true"></div>
+                {captchaError && <p className="text-red-500 -mt-8 text-sm">Please complete the reCAPTCHA to submit the form.</p>}
+
                 <button
                   type="submit"
-                  className="w-full text-2xl h-16 text-white  font-semibold leading-6 rounded-lg transition-all duration-700 hover:bg-gray-600 bg-black shadow-sm"
+                  className="send-button w-full text-2xl h-16 text-black font-semibold leading-6 rounded-lg transition-all duration-700 hover:bg-yellow-500 bg-[#FFD262] shadow-sm"
                 >
                   Send
                 </button>
@@ -143,6 +231,17 @@ const Contact = () => {
           </div>
         </section>
       </form>
+
+      {popupVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-green bg-opacity-0 z-50">
+          <div className="bg-white popup-message flex items-center justify-center flex-col rounded-lg p-6 shadow-lg transform transition-all duration-300 scale-100">
+            <h2 className="text-2xl mb-4">{popupMessage}</h2>
+            <button onClick={closePopup} className="bg-black hover:shadow-lg hover:shadow-white text-xl text-white px-4 py-2 rounded">
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

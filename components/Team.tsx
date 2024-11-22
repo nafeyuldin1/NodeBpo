@@ -1,6 +1,5 @@
 import { TeamInfo } from '@/data'
 import { CaladeaF } from '@/fonts'
-import Image from 'next/image'
 import React from 'react'
 
 const Team = () => {
@@ -17,7 +16,7 @@ const Team = () => {
         {
             TeamInfo.map((item, index) => (
                 <div key={index} className='flex flex-col  items-center justify-center' >
-                 <Image className='rounded-3xl' src={item.profileImage} alt={item.profileName} height={1000} width={1000} />
+                 <img className='rounded-3xl' src={item.profileImage} alt={item.profileName} height={1000} width={1000} />
                  <div className='flex flex-col items-center justify-center mt-2 md:mt-6'>
                  <h3 style={{
                     fontWeight: '900'

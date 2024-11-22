@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import ServiceBanner from "@/components/ServiceBanner";
 import Services from "@/components/Services";
-import Team from "@/components/Team";
+// import Team from "@/components/Team";
 import TrustBadges from "@/components/TrustBadges";
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
     <ServiceBanner/>
     <Services/>
     <About/>
-    <Team/>
+    {/* <Team/> */}
     <FAQS/>
     <Contact/>
     <Footer/>

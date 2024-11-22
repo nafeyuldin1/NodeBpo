@@ -2,7 +2,6 @@
 
 import { MenuLinks } from "@/data";
 import { CaladeaF } from "@/fonts";
-import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
@@ -40,20 +39,22 @@ const Header = () => {
     >
       {/* Logo */}
       <div>
-        <Image
+        <Link href='#home'>
+        <img
           className="h-[100px] w-auto"
-          src="/Untitled_design__3_-removebg-preview 1.png"
+          src="/favicon.png"
           height={500}
           width={500}
           alt="NodeBPO"
         />
+        </Link>
       </div>
 
       {/* Desktop Menu and Contact */}
       <div className="hidden md:flex md:flex-row md:gap-0 gap-4">
         {MenuLinks.map((item, index) => (
           <Link
-            className={`mx-3 hover:text-gray-800 transition duration-500 ease-in-out hover:scale-105  text-black uppercase ${CaladeaF} text-xl`}
+            className={`mx-3 hover:text-gray-800 transition duration-500 ease-in-out hover:scale-125  text-black  ${CaladeaF} text-xl`}
             key={index}
             href={item.link}
           >
